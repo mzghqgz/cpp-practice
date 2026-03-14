@@ -2176,6 +2176,6 @@ int main()
     Solution s;
     string nums1 = "abcde";
     string nums2 = "ace";
-    s.longestCommonSubsequence(nums1,nums2);
+    s.longestCommonSubsequence(nums1, nums2);
     return 0;
 }
