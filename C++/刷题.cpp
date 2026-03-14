@@ -2107,40 +2107,75 @@ struct TreeNode {
 
 
 
-//46.最长重复子序列
+////46.最长重复子序列
+//class Solution {
+//public:
+//    int findLength(vector<int>& nums1, vector<int>& nums2) {
+//        vector<vector<int>> dp(nums1.size(), vector<int>(nums2.size(), 0));
+//        for (int i = 0; i < nums1.size(); i++)
+//        {
+//            for (int j = 0; j < nums2.size(); j++)
+//            {
+//                if (nums1[i] == nums2[j])
+//                {
+//                    dp[i][j] = 1;
+//                    if (i >= 1 && j >= 1)
+//                    {
+//                        dp[i][j] += dp[i - 1][j - 1];
+//                    }
+//                }
+//                else
+//                {
+//                    if (j >= 1)
+//                    {
+//                        dp[i][j] = dp[i][j - 1];
+//                    }
+//                }
+//            }
+//        }
+//        return dp[nums1.size() - 1][nums2.size() - 1];
+//    }
+//};
+
+
+
+
+
+//47.最长公共子序列
 class Solution {
 public:
-    int findLength(vector<int>& nums1, vector<int>& nums2) {
-        vector<vector<int>> dp(nums1.size(), vector<int>(nums2.size(), 0));
-        for (int i = 0; i < nums1.size(); i++)
+    int longestCommonSubsequence(string text1, string text2) {
+        vector<vector<int>> dp(text1.size(), vector<int>(text2.size(), 0));
+        int result = 0;
+        for (int i = 0; i < text1.size(); i++)
         {
-            for (int j = 0; j < nums2.size(); j++)
+            for (int j = 0; j < text2.size(); j++)
             {
-                if (nums1[i] == nums2[j])
+                if (text1[i] == text2[j])
                 {
                     dp[i][j] = 1;
-                    if (i >= 1 && j >= 1)
+                    for (int k = 0; k < i; k++)
                     {
-                        dp[i][j] += dp[i - 1][j - 1];
+                        for (int h = 0; h < j; h++)
+                        {
+                            if (dp[k][h] != 0)
+                            {
+                                dp[i][j] = max(dp[i][j], dp[k][h] + 1);
+                            }
+                        }
                     }
                 }
-                else
-                {
-                    if (j >= 1)
-                    {
-                        dp[i][j] = dp[i][j - 1];
-                    }
-                }
+                result = max(result, dp[i][j]);
             }
         }
-        return dp[nums1.size() - 1][nums2.size() - 1];
+        return result;
     }
 };
 int main()
 {
     Solution s;
-    vector<int> nums1 = { 1,2,3,2,1 };
-    vector<int> nums2 = { 3,2,1,4,7 };
-    s.findLength(nums1,nums2);
+    string nums1 = "abcde";
+    string nums2 = "ace";
+    s.longestCommonSubsequence(nums1,nums2);
     return 0;
 }
