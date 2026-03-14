@@ -2146,7 +2146,6 @@ class Solution {
 public:
     int longestCommonSubsequence(string text1, string text2) {
         vector<vector<int>> dp(text1.size(), vector<int>(text2.size(), 0));
-        int result = 0;
         for (int i = 0; i < text1.size(); i++)
         {
             for (int j = 0; j < text2.size(); j++)
@@ -2154,28 +2153,36 @@ public:
                 if (text1[i] == text2[j])
                 {
                     dp[i][j] = 1;
-                    for (int k = 0; k < i; k++)
+                    if (i >= 1 && j >= 1)
                     {
-                        for (int h = 0; h < j; h++)
-                        {
-                            if (dp[k][h] != 0)
-                            {
-                                dp[i][j] = max(dp[i][j], dp[k][h] + 1);
-                            }
-                        }
+                        dp[i][j] = dp[i - 1][j - 1] + 1;
                     }
                 }
-                result = max(result, dp[i][j]);
+                else
+                {
+                    if (i >= 1 && j >= 1)
+                    {
+                        dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                    }
+                    else if (i >= 1)
+                    {
+                        dp[i][j] = dp[i - 1][j];
+                    }
+                    else if (j >= 1)
+                    {
+                        dp[i][j] = dp[i][j - 1];
+                    }
+                }
             }
         }
-        return result;
+        return dp[text1.size() - 1][text2.size() - 1];
     }
 };
 int main()
 {
     Solution s;
-    string nums1 = "abcde";
-    string nums2 = "ace";
+    string nums1 = "abcdefgh";
+    string nums2 = "aceg";
     s.longestCommonSubsequence(nums1, nums2);
     return 0;
 }
