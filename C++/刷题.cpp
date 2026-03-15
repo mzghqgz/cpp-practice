@@ -2141,49 +2141,76 @@ struct TreeNode {
 
 
 
-//47.最长公共子序列
+////47.最长公共子序列
+//class Solution {
+//public:
+//    int longestCommonSubsequence(string text1, string text2) {
+//        vector<vector<int>> dp(text1.size(), vector<int>(text2.size(), 0));
+//        for (int i = 0; i < text1.size(); i++)
+//        {
+//            for (int j = 0; j < text2.size(); j++)
+//            {
+//                if (text1[i] == text2[j])
+//                {
+//                    dp[i][j] = 1;
+//                    if (i >= 1 && j >= 1)
+//                    {
+//                        dp[i][j] = dp[i - 1][j - 1] + 1;
+//                    }
+//                }
+//                else
+//                {
+//                    if (i >= 1 && j >= 1)
+//                    {
+//                        dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+//                    }
+//                    else if (i >= 1)
+//                    {
+//                        dp[i][j] = dp[i - 1][j];
+//                    }
+//                    else if (j >= 1)
+//                    {
+//                        dp[i][j] = dp[i][j - 1];
+//                    }
+//                }
+//            }
+//        }
+//        return dp[text1.size() - 1][text2.size() - 1];
+//    }
+//};
+
+
+
+
+
+
+//48.不相交的线
 class Solution {
 public:
-    int longestCommonSubsequence(string text1, string text2) {
-        vector<vector<int>> dp(text1.size(), vector<int>(text2.size(), 0));
-        for (int i = 0; i < text1.size(); i++)
+    int maxUncrossedLines(vector<int>& nums1, vector<int>& nums2) {
+        vector<vector<int>> dp(nums1.size() + 1, vector<int>(nums2.size() + 1, 0));
+        for (int i = 1; i <= nums1.size(); i++)
         {
-            for (int j = 0; j < text2.size(); j++)
+            for (int j = 1; j <= nums2.size(); j++)
             {
-                if (text1[i] == text2[j])
+                if (nums1[i - 1] == nums2[j - 1])
                 {
-                    dp[i][j] = 1;
-                    if (i >= 1 && j >= 1)
-                    {
-                        dp[i][j] = dp[i - 1][j - 1] + 1;
-                    }
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
                 }
                 else
                 {
-                    if (i >= 1 && j >= 1)
-                    {
-                        dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
-                    }
-                    else if (i >= 1)
-                    {
-                        dp[i][j] = dp[i - 1][j];
-                    }
-                    else if (j >= 1)
-                    {
-                        dp[i][j] = dp[i][j - 1];
-                    }
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
                 }
             }
         }
-        return dp[text1.size() - 1][text2.size() - 1];
+        return dp[nums1.size()][nums2.size()];
     }
 };
 int main()
 {
     Solution s;
-    string nums1 = "abcdefgh";
-    string nums2 = "aceg";
-
-    s.longestCommonSubsequence(nums1, nums2);
+    vector<int> nums1 = { 2,5,1,2,5 };
+    vector<int> nums2 = { 10,5,2,1,5,2 };
+    s.maxUncrossedLines(nums1, nums2);
     return 0;
 }
