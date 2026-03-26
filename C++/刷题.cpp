@@ -2283,39 +2283,459 @@ struct TreeNode {
 
 
 
-//51.不同的子序列
+////51.不同的子序列
+//class Solution {
+//public:
+//    int numDistinct(string s, string t) {
+//        vector<vector<uint64_t>> dp(s.size() + 1, vector<uint64_t>(t.size() + 1));
+//        for (int i = 0; i < s.size(); i++)
+//        {
+//            dp[i][0] = 1;
+//        }
+//        for (int j = 1; j < t.size(); j++)
+//        {
+//            dp[0][j] = 0;
+//        }
+//        for (int i = 1; i <= s.size(); i++)
+//        {
+//            for (int j = 1; j <= t.size(); j++)
+//            {
+//                if (s[i - 1] == t[j - 1])
+//                {
+//                    dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+//                }
+//                else
+//                {
+//                    dp[i][j] = dp[i - 1][j];
+//                }
+//            }
+//        }
+//        return dp[s.size()][t.size()];
+//    }
+//};
+//int main()
+//{
+//    Solution s;
+//    s.numDistinct("rabbbit", "rabbit");
+//    return 0;
+//}
+
+
+
+
+
+
+////52.两个字符串的删除操作
+//class Solution {
+//public:
+//    int minDistance(string word1, string word2) {
+//        vector<vector<int>> dp(word1.size() + 1, vector<int>(word2.size() + 1, 0));
+//        for (int i = 1; i <= word1.size(); i++)
+//        {
+//            for (int j = 1; j <= word2.size(); j++)
+//            {
+//                if (word1[i - 1] == word2[j - 1])
+//                {
+//                    dp[i][j] = dp[i - 1][j - 1] + 1;
+//                }
+//                else
+//                {
+//                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+//                }
+//            }
+//        }
+//        return word1.size() - dp[word1.size()][word2.size()] + word2.size() - dp[word1.size()][word2.size()];
+//    }
+//};
+
+
+
+
+
+
+////53.编辑距离
+//class Solution {
+//public:
+//    int minDistance(string word1, string word2) {
+//        vector<vector<int>>dp(word1.size() + 1, vector<int>(word2.size() + 1, 0));
+//        for (int i = 0; i <= word1.size(); i++)
+//        {
+//            dp[i][0] = i;
+//        }
+//        for (int j = 0; j <= word2.size(); j++)
+//        {
+//            dp[0][j] = j;
+//        }
+//        for (int i = 1; i <= word1.size(); i++)
+//        {
+//            for (int j = 1; j <= word2.size(); j++)
+//            {
+//                if (word1[i - 1] == word2[j - 1])
+//                {
+//                    dp[i][j] = dp[i - 1][j - 1];
+//                }
+//                else
+//                {
+//                    dp[i][j] = min({ dp[i - 1][j] + 1,dp[i][j - 1] + 1,dp[i - 1][j - 1] + 1 });
+//                }
+//            }
+//        }
+//        return dp[word1.size()][word2.size()];
+//    }
+//};
+//int main()
+//{
+//    Solution s;
+//    s.minDistance("intention", "execution");
+//    return 0;
+//}
+
+
+
+
+
+
+////54.回文子串
+//class Solution {
+//public:
+//    bool huiwen(string s1)
+//    {
+//        string s2 = s1;
+//        reverse(s1.begin(), s1.end());
+//        return s1 == s2;
+//    }
+//    int countSubstrings(string s) {
+//        int result = 0;
+//        for (int i = 0; i < s.size(); i++)
+//        {
+//            for (int j = i; j < s.size(); j++)
+//            {
+//                if (huiwen(s.substr(i, j - i + 1)))
+//                {
+//                    result++;
+//                }
+//            }
+//        }
+//        return result;
+//    }
+//};
+//int main()
+//{
+//    Solution s;
+//    s.countSubstrings("aabaa");
+//    return 0;
+//}
+
+
+
+
+
+////55.最长回文子序列
+//class Solution {
+//public:
+//    int longestPalindromeSubseq(string s) {
+//        vector<vector<int>> dp(s.size(), vector<int>(s.size(), 0));
+//        for (int i = s.size() - 1; i >= 0; i--)
+//        {
+//            for (int j = i; j < s.size(); j++)
+//            {
+//                if (s[i] == s[j])
+//                {
+//                    if (j == i)
+//                    {
+//                        dp[i][j] = 1;
+//                    }
+//                    else
+//                    {
+//                        dp[i][j] = dp[i + 1][j - 1] + 2;
+//                    }
+//                }
+//                else
+//                {
+//                    dp[i][j] = dp[i][j - 1];
+//                }
+//            }
+//        }
+//        return dp[0][s.size() - 1];
+//    }
+//};
+//int main()
+//{
+//    Solution s;
+//    s.longestPalindromeSubseq("bbbabbb");
+//    return 0;
+//}
+
+
+
+
+
+
+
+////56.最长递增子序列(求具体的值)
+//class Solution
+//{
+//public:
+//    vector<vector<int>> longestcreasing(vector<int>& nums)
+//    {
+//        vector<int> lis(nums.size(),-1);
+//        vector<int> dp(nums.size(), 0);
+//        vector<vector<int>> ans;
+//        dp[0] = 1;
+//        int result1 = 0;
+//        vector<int> result2;
+//        for (int i = 1; i < nums.size(); i++)
+//        {
+//            for (int j = 0; j < i; j++)
+//            {
+//                if (nums[i] > nums[j] && dp[i] < dp[j] + 1)
+//                {
+//                    dp[i] = dp[j] + 1;
+//                    lis[i] = j;
+//                    if (result1 == dp[i])
+//                    {
+//                        result2.push_back(i);
+//                    }
+//                    if (result1 < dp[i])
+//                    {
+//                        result1 = dp[i];
+//                        result2.clear();
+//                        result2.push_back(i);
+//                        lis[i] = j;
+//                    }
+//                }
+//            }
+//        }
+//        for (int i = 0; i < result2.size(); i++)
+//        {
+//            ans.emplace_back();
+//            for (int j = result2[i]; j != -1; j = lis[j])
+//            {
+//                ans[i].push_back(nums[j]);
+//            }
+//            reverse(ans[i].begin(), ans[i].end());
+//        }
+//        return ans;
+//    }
+//};
+//int main()
+//{
+//    Solution s;
+//    vector<int> nums = { 4,7,5 };
+//    s.longestcreasing(nums);
+//    return 0;
+//}
+
+
+
+
+
+
+//57.摆动序列
+//class Solution {
+//public:
+//    int wiggleMaxLength(vector<int>& nums) {
+//        vector<int>dp(nums.size(), 0);
+//        if (nums.size() == 0)
+//        {
+//            return 0;
+//        }
+//        if (nums.size() == 1)
+//        {
+//            return 1;
+//        }
+//        dp[0] = 1;
+//        if (nums[0] == nums[1])
+//        {
+//            dp[1] = 1;
+//        }
+//        else
+//        {
+//            dp[1] = 2;
+//        }
+//        for (int i = 2; i < nums.size(); i++)
+//        {
+//            for (int j = 1; j < i; j++)
+//            {
+//                if (dp[i - 1] == 1)
+//                {
+//                    if (nums[i - 1] == nums[i])
+//                    {
+//                        dp[i] = 1;
+//                    }
+//                    else
+//                    {
+//                        dp[i] = 2;
+//                    }
+//                    break;
+//                }
+//                if ((nums[j] - nums[j - 1]) * (nums[i] - nums[j]) < 0)
+//                {
+//                    dp[i] = max(dp[i], dp[j] + 1);
+//                }
+//                else
+//                {
+//                    dp[i] = max(dp[i], dp[j]);
+//                }
+//            }
+//        }
+//        return dp[nums.size() - 1];
+//    }
+//};
+
+
+
+
+
+////58.买卖股票最佳时机2
+//class Solution {
+//public:
+//    int maxProfit(vector<int>& prices) {
+//        int cur = 0;
+//        int result = 0;
+//        for (int i = 0; i < prices.size() - 1; i++)
+//        {
+//            cur = prices[i + 1] - prices[i];
+//            if (cur < 0)
+//            {
+//
+//            }
+//            else
+//            {
+//                result += cur;
+//            }
+//        }
+//        return result;
+//    }
+//};
+//int main()
+//{
+//    Solution s;
+//    vector<int>nums = { 1,2,3,4,5 };
+//    s.maxProfit(nums);
+//    return 0;
+//}
+
+
+
+
+
+
+////59.跳跃游戏
+//class Solution {
+//public:
+//    bool canJump(vector<int>& nums) {
+//        int j = 0;
+//        int len = 0;
+//        int num = 0;
+//        int j1 = 0;
+//        for (int i = 0; i < nums.size(); i++)
+//        {
+//            len = i;
+//            while (j < nums.size() - 1 && j + nums[j] != j)
+//            {
+//                j = nums[i] + i;
+//                i = j;
+//            }
+//            if (j >= nums.size() - 1)
+//            {
+//                return true;
+//            }
+//            if (j + nums[j] == j)
+//            {
+//                num++;
+//            }
+//            i = len;
+//            if (i + 1 == num && nums[i] == 0 && j1 == j)
+//            {
+//                return false;
+//            }
+//            j1 = j;
+//            j = 0;
+//        }
+//        return false;
+//    }
+//};
+
+
+
+
+
+
+////60.跳跃游戏2
+//class Solution {
+//public:
+//    int jump(vector<int>& nums) {
+//        vector<int> dp(nums.size(), INT_MAX);
+//        dp[0] = 0;
+//        for (int i = 1; i < nums.size(); i++)
+//        {
+//            for (int j = 0; j < i; j++)
+//            {
+//                if (j + nums[j] >= i)
+//                {
+//                    dp[i] = min(dp[i], dp[j] + 1);
+//                }
+//            }
+//        }
+//        return dp[nums.size() - 1];
+//    }
+//};
+
+
+
+
+
+//61.k次取反后最大化数组的最小值
 class Solution {
 public:
-    int numDistinct(string s, string t) {
-        vector<vector<uint64_t>> dp(s.size() + 1, vector<uint64_t>(t.size() + 1));
-        for (int i = 0; i < s.size(); i++)
+    int largestSumAfterKNegations(vector<int>& nums, int k) {
+        sort(nums.begin(), nums.end());
+        for (int i = 0; i < nums.size(); i++)
         {
-            dp[i][0] = 1;
-        }
-        for (int j = 1; j < t.size(); j++)
-        {
-            dp[0][j] = 0;
-        }
-        for (int i = 1; i <= s.size(); i++)
-        {
-            for (int j = 1; j <= t.size(); j++)
+            if (nums[i] < 0)
             {
-                if (s[i - 1] == t[j - 1])
+                nums[i] = -nums[i];
+                k--;
+                if (k == 0)
                 {
-                    dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+                    break;
                 }
-                else
+                continue;
+            }
+            if (nums[i] >= 0 && k != 0)
+            {
+                while (k != 0)
                 {
-                    dp[i][j] = dp[i - 1][j];
+                    if (i >= 1 && nums[i] > nums[i - 1])
+                    {
+                        nums[i-1] = -nums[i-1];
+                    }
+                    else
+                    {
+                        nums[i] = -nums[i];
+                    }
+                    k--;
                 }
             }
         }
-        return dp[s.size()][t.size()];
+        while (k != 0)
+        {
+            nums[nums.size() - 1] = -nums[nums.size() - 1];
+            k--;
+        }
+        int sum = 0;
+        for (int i = 0; i < nums.size(); i++)
+        {
+            sum += nums[i];
+        }
+        return sum;
     }
 };
 int main()
 {
     Solution s;
-    s.numDistinct("rabbbit", "rabbit");
+    vector<int> nums = { 4,2,3 };
+    s.largestSumAfterKNegations(nums,1);
     return 0;
 }
