@@ -2686,56 +2686,251 @@ struct TreeNode {
 
 
 
-//61.k次取反后最大化数组的最小值
+////61.k次取反后最大化数组的最小值
+//class Solution {
+//public:
+//    int largestSumAfterKNegations(vector<int>& nums, int k) {
+//        sort(nums.begin(), nums.end());
+//        for (int i = 0; i < nums.size(); i++)
+//        {
+//            if (nums[i] < 0)
+//            {
+//                nums[i] = -nums[i];
+//                k--;
+//                if (k == 0)
+//                {
+//                    break;
+//                }
+//                continue;
+//            }
+//            if (nums[i] >= 0 && k != 0)
+//            {
+//                while (k != 0)
+//                {
+//                    if (i >= 1 && nums[i] > nums[i - 1])
+//                    {
+//                        nums[i-1] = -nums[i-1];
+//                    }
+//                    else
+//                    {
+//                        nums[i] = -nums[i];
+//                    }
+//                    k--;
+//                }
+//            }
+//        }
+//        while (k != 0)
+//        {
+//            nums[nums.size() - 1] = -nums[nums.size() - 1];
+//            k--;
+//        }
+//        int sum = 0;
+//        for (int i = 0; i < nums.size(); i++)
+//        {
+//            sum += nums[i];
+//        }
+//        return sum;
+//    }
+//};
+
+
+
+
+
+////62.加油站
+//class Solution {
+//public:
+//    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+//        vector<int> vec;
+//        for (int i = 0; i < gas.size(); i++)
+//        {
+//            vec.push_back(gas[i] - cost[i]);
+//        }
+//        int i = 0;
+//        while (i!=vec.size())
+//        {
+//            if (vec[i] > 0)
+//            {
+//                int cap = 0;
+//                int j = i;
+//                while (cap >= 0)
+//                {
+//                    cap += vec[j];
+//                    if (cap < 0)
+//                    {
+//                        break;
+//                    }
+//                    if ((j+1)%vec.size() == i)
+//                    {
+//                        return i;
+//                    }
+//                    j = (j + 1) % vec.size();
+//                }
+//            }
+//            i++;
+//        }
+//        return -1;
+//    }
+//};
+//int main()
+//{
+//    Solution s;
+//    vector<int> gas = { 1,2,3,4,5 };
+//    vector<int> cost = { 3,4,5,1,2 };
+//    s.canCompleteCircuit(gas, cost);
+//    return 0;
+//}
+
+
+
+
+
+
+
+////63.分发糖果
+//class Solution {
+//public:
+//    int candy(vector<int>& ratings) {
+//        vector<int> vec(ratings.size(), 1);
+//        int result = 0;
+//        for (int i = 1; i < ratings.size(); i++)
+//        {
+//            if (ratings[i] > ratings[i - 1])
+//            {
+//                vec[i] = vec[i - 1] + 1;
+//            }
+//        }
+//        for (int i = ratings.size() - 1; i >= 1; i--)
+//        {
+//            if (ratings[i] < ratings[i - 1] && vec[i - 1] <= vec[i])
+//            {
+//                vec[i - 1] = vec[i] + 1;
+//            }
+//        }
+//        for (int i = 0; i < vec.size(); i++)
+//        {
+//            result += vec[i];
+//        }
+//        return result;
+//    }
+//};
+//int main()
+//{
+//    Solution s;
+//    vector<int> v = { 1,3,4,5,2 };
+//    s.candy(v);
+//    return 0;
+//}
+
+
+
+
+
+
+////64.柠檬水找零
+//class Solution {
+//public:
+//    bool lemonadeChange(vector<int>& bills) {
+//        unordered_map<int,int> map;
+//        map[5] = 0;
+//        map[10] = 0;
+//        map[20] = 0;
+//        for (int i = 0; i < bills.size(); i++)
+//        {
+//            map[bills[i]]++;
+//            if (bills[i] - 5 == 5)
+//            {
+//                map[5]--;
+//            }
+//            if (bills[i] - 5 == 15 && map[10] < 1)
+//            {
+//                map[5] -= 3;
+//            }
+//            if (bills[i] - 5 == 15 && map[10] >= 1)
+//            {
+//                map[10]--;
+//                map[5]--;
+//            }
+//            if (map[5] < 0 || map[10] < 0)
+//            {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
+//};
+//int main()
+//{
+//    Solution s;
+//    vector<int> bills = { 5,5,5,5,20,20,5,5,5,5 };
+//    s.lemonadeChange(bills);
+//    return 0;
+//}
+
+
+
+
+
+
+
+////65.用最少的箭射爆气球
+//class Solution {
+//public:
+//    int findMinArrowShots(vector<vector<int>>& points) {
+//        sort(points.begin(), points.end(), [](vector<int>& u, vector<int>& v) {
+//            return u[0] < v[0] || (u[0] == v[0] && u[1] < v[1]);
+//            });
+//        int result = 1;
+//        int s3 = points[0][1];
+//        for (int i = 1; i < points.size(); i++)
+//        {
+//            if (points[i][0] > points[i - 1][1])
+//            {
+//                result++;
+//            }
+//            else
+//            {
+//                points[i][1] = min(points[i][1], points[i - 1][1]);
+//            }
+//        }
+//        return result;
+//    }
+//};
+//int main()
+//{
+//    Solution s;
+//    vector<vector<int>> points = { {10,16} ,{2,8},{1,6},{7,12} };
+//    s.findMinArrowShots(points);
+//    return 0;
+//}
+
+
+
+
+
+//66.无重叠区间
 class Solution {
 public:
-    int largestSumAfterKNegations(vector<int>& nums, int k) {
-        sort(nums.begin(), nums.end());
-        for (int i = 0; i < nums.size(); i++)
+    int eraseOverlapIntervals(vector<vector<int>>& intervals) {
+        sort(intervals.begin(), intervals.end(), [](vector<int>& u, vector<int>& v) {
+            return u[0] < v[0] || (u[0] == v[0] && u[1] < v[1]);
+            });
+        int result = 0;
+        for (int i = 1; i < intervals.size(); i++)
         {
-            if (nums[i] < 0)
+            if (intervals[i][0] < intervals[i - 1][1])
             {
-                nums[i] = -nums[i];
-                k--;
-                if (k == 0)
-                {
-                    break;
-                }
-                continue;
-            }
-            if (nums[i] >= 0 && k != 0)
-            {
-                while (k != 0)
-                {
-                    if (i >= 1 && nums[i] > nums[i - 1])
-                    {
-                        nums[i-1] = -nums[i-1];
-                    }
-                    else
-                    {
-                        nums[i] = -nums[i];
-                    }
-                    k--;
-                }
+                result++;
+                intervals[i][1] = min(intervals[i][1], intervals[i - 1][1]);
             }
         }
-        while (k != 0)
-        {
-            nums[nums.size() - 1] = -nums[nums.size() - 1];
-            k--;
-        }
-        int sum = 0;
-        for (int i = 0; i < nums.size(); i++)
-        {
-            sum += nums[i];
-        }
-        return sum;
+        return result;
     }
 };
 int main()
 {
     Solution s;
-    vector<int> nums = { 4,2,3 };
-    s.largestSumAfterKNegations(nums,1);
+    vector<vector<int>> points = { {1,2},{1,3},{2,3},{3,4} };
+    s.eraseOverlapIntervals(points);
     return 0;
 }
