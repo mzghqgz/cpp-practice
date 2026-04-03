@@ -2908,29 +2908,153 @@ struct TreeNode {
 
 
 
-//66.无重叠区间
+////66.无重叠区间
+//class Solution {
+//public:
+//    int eraseOverlapIntervals(vector<vector<int>>& intervals) {
+//        sort(intervals.begin(), intervals.end(), [](vector<int>& u, vector<int>& v) {
+//            return u[0] < v[0] || (u[0] == v[0] && u[1] < v[1]);
+//            });
+//        int result = 0;
+//        for (int i = 1; i < intervals.size(); i++)
+//        {
+//            if (intervals[i][0] < intervals[i - 1][1])
+//            {
+//                result++;
+//                intervals[i][1] = min(intervals[i][1], intervals[i - 1][1]);
+//            }
+//        }
+//        return result;
+//    }
+//};
+//int main()
+//{
+//    Solution s;
+//    vector<vector<int>> points = { {1,2},{1,3},{2,3},{3,4} };
+//    s.eraseOverlapIntervals(points);
+//    return 0;
+//}
+
+
+
+
+
+////67.划分字母区间
+//class Solution {
+//public:
+//    vector<int> partitionLabels(string s) {
+//        vector<int> result;
+//        vector<int> start;
+//        vector<int> end;
+//        bool flag = false;
+//        for (int i = 0; i < s.size(); i++)
+//        {
+//            for (int k = 0; k < start.size(); k++)
+//            {
+//                if (s[start[k]] == s[i] && i != 0)
+//                {
+//                    flag = true;
+//                    break;
+//                }
+//            }
+//            if (flag)
+//            {
+//                flag = false;
+//                continue;
+//            }
+//            start.push_back(i);
+//            for (int j = s.size(); j >= i; j--)
+//            {
+//                if (s[j] == s[i])
+//                {
+//                    end.push_back(j);
+//                    break;
+//                }
+//            }
+//        }
+//        for (int i = 0; i < start.size() - 1; i++)
+//        {
+//            if (start[i + 1] < end[i])
+//            {
+//                start[i + 1] = start[i];
+//                end[i + 1] = max(end[i], end[i + 1]);
+//            }
+//            if (start[i + 1] > end[i])
+//            {
+//                result.push_back(end[i] - start[i] + 1);
+//                continue;
+//            }
+//        }
+//        result.push_back(end[start.size() - 1] - start[start.size() - 1] + 1);
+//        return result;
+//    }
+//};
+//int main()
+//{
+//    Solution s;
+//    string s1 = "ababcbaddeeff";
+//    s.partitionLabels(s1);
+//    return 0;
+//}
+
+
+
+
+
+//68.单调递增的数字
 class Solution {
 public:
-    int eraseOverlapIntervals(vector<vector<int>>& intervals) {
-        sort(intervals.begin(), intervals.end(), [](vector<int>& u, vector<int>& v) {
-            return u[0] < v[0] || (u[0] == v[0] && u[1] < v[1]);
-            });
-        int result = 0;
-        for (int i = 1; i < intervals.size(); i++)
+    int monotoneIncreasingDigits(int n) {
+        vector<int> nums;
+        while (n>0)
         {
-            if (intervals[i][0] < intervals[i - 1][1])
+            nums.push_back(n % 10);
+            n /= 10;
+        }
+        reverse(nums.begin(), nums.end());
+        for (int i = 0; i < nums.size() - 1; i++)
+        {
+            if (nums[i] > nums[i + 1])
             {
-                result++;
-                intervals[i][1] = min(intervals[i][1], intervals[i - 1][1]);
+                if (i == 0)
+                {
+                    nums[i]--;
+                    fill(nums.begin() + i + 1, nums.end(), 9);
+                }
+                else
+                {
+                    int j = 0;
+                    for (j = i; j > 0; j--)
+                    {
+                        if (nums[j] - 1 >= nums[j - 1])
+                        {
+                            nums[j]--;
+                            fill(nums.begin() + j + 1, nums.end(), 9);
+                            break;
+                        }
+                    }
+                    if (j == 0)
+                    {
+                        nums[0]--;
+                        fill(nums.begin() + j + 1, nums.end(), 9);
+                    }
+                }
             }
         }
-        return result;
+        reverse(nums.begin(), nums.end());
+        int num = 0;
+        int k1 = 1;
+        for (int i = 0; i < nums.size(); i++)
+        {
+            num += nums[i] * k1;
+            k1 *= 10;
+        }
+        return num;
     }
 };
 int main()
 {
     Solution s;
-    vector<vector<int>> points = { {1,2},{1,3},{2,3},{3,4} };
-    s.eraseOverlapIntervals(points);
+    s.monotoneIncreasingDigits(1000000000);
     return 0;
 }
