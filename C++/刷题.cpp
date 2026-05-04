@@ -8,6 +8,7 @@
 #include<deque>
 #include<unordered_map>
 #include<stack>
+#include<queue>
 using namespace std;
 struct ListNode {
     int val;
@@ -3001,60 +3002,571 @@ struct TreeNode {
 
 
 
-//68.单调递增的数字
-class Solution {
-public:
-    int monotoneIncreasingDigits(int n) {
-        vector<int> nums;
-        while (n>0)
+////68.单调递增的数字
+//class Solution {
+//public:
+//    int monotoneIncreasingDigits(int n) {
+//        vector<int> nums;
+//        while (n>0)
+//        {
+//            nums.push_back(n % 10);
+//            n /= 10;
+//        }
+//        reverse(nums.begin(), nums.end());
+//        for (int i = 0; i < nums.size() - 1; i++)
+//        {
+//            if (nums[i] > nums[i + 1])
+//            {
+//                if (i == 0)
+//                {
+//                    nums[i]--;
+//                    fill(nums.begin() + i + 1, nums.end(), 9);
+//                }
+//                else
+//                {
+//                    int j = 0;
+//                    for (j = i; j > 0; j--)
+//                    {
+//                        if (nums[j] - 1 >= nums[j - 1])
+//                        {
+//                            nums[j]--;
+//                            fill(nums.begin() + j + 1, nums.end(), 9);
+//                            break;
+//                        }
+//                    }
+//                    if (j == 0)
+//                    {
+//                        nums[0]--;
+//                        fill(nums.begin() + j + 1, nums.end(), 9);
+//                    }
+//                }
+//            }
+//        }
+//        reverse(nums.begin(), nums.end());
+//        int num = 0;
+//        int k1 = 1;
+//        for (int i = 0; i < nums.size(); i++)
+//        {
+//            num += nums[i] * k1;
+//            k1 *= 10;
+//        }
+//        return num;
+//    }
+//};
+//int main()
+//{
+//    Solution s;
+//    s.monotoneIncreasingDigits(1000000000);
+//    return 0;
+//}
+
+
+
+
+
+////69.岛屿数量
+//int result = 0;
+//vector<vector<int>> dir = { {1,0},{-1,0},{0,1},{0,-1} };
+//queue<pair<int, int>> que;
+//void bfs(vector<vector<int>>& grid, vector<vector<bool>>& visited, int i, int j, int N, int M)
+//{
+//    que.push({ i,j });
+//    visited[i][j] = true;
+//    while (!que.empty())
+//    {
+//        pair<int, int> m = que.front();
+//        que.pop();
+//        for (int k = 0; k < 4; k++)
+//        {
+//            int nextx = m.first + dir[k][0];
+//            int nexty = m.second + dir[k][1];
+//            if (nextx < 0 || nextx >= N || nexty < 0 || nexty >= M)
+//            {
+//                continue;
+//            }
+//            if (grid[nextx][nexty] == 1 && visited[nextx][nexty] == false)
+//            {
+//                visited[nextx][nexty] = true;
+//                que.push({ nextx,nexty });
+//            }
+//        }
+//    }
+//}
+//int main()
+//{
+//    int N = 4;
+//    int M = 5;
+//    vector<vector<int>> grid = { {1,1,0,0,0},{1,1,0,0,0},{0,0,1,0,0},{0,0,0,1,1} };
+//    vector<vector<bool>> visited(N, vector<bool>(M, false));
+//    for (int i = 0; i < N; i++)
+//    {
+//        for (int j = 0; j < M; j++)
+//        {
+//            if (grid[i][j] == 1 && visited[i][j] == false)
+//            {
+//                bfs(grid, visited, i, j,N,M);
+//                result++;
+//            }
+//        }
+//    }
+//    cout << result << endl;
+//    return 0;
+//}
+
+
+
+
+
+
+
+////70.岛屿的最大面积
+//int result1 = 0;
+//int result0 = 0;
+//vector<vector<int>> dir = { {1,0},{-1,0},{0,1},{0,-1} };
+//void dfs(vector<vector<int>>& grid, vector<vector<bool>>& visited, int i, int j, int n, int m)
+//{
+//    for (int k = 0; k < 4; k++)
+//    {
+//        int nextx = i + dir[k][0];
+//        int nexty = j + dir[k][1];
+//        if (nextx < 0 || nextx >= n || nexty < 0 || nexty >= m)
+//        {
+//            continue;
+//        }
+//        if (grid[nextx][nexty] == 1 && visited[nextx][nexty] == false)
+//        {
+//            visited[nextx][nexty] = true;
+//            result1++;
+//            dfs(grid, visited, nextx, nexty, n, m);
+//        }
+//    }
+//}
+//int main()
+//{
+//    int n = 4;
+//    int m = 5;
+//    vector<vector<int>> grid = { {1,1,0,0,0},{1,1,0,0,0},{0,0,1,0,0},{0,0,0,1,1} };
+//    vector<vector<bool>> visited(n, vector<bool>(m, false));
+//    for (int i = 0; i < n; i++)
+//    {
+//        for (int j = 0; j < m; j++)
+//        {
+//            if (grid[i][j] == 1 && visited[i][j] == false)
+//            {
+//                visited[i][j] = true;
+//                result1++;
+//                dfs(grid, visited, i, j, n, m);
+//                result0 = max(result1, result0);
+//                result1 = 0;
+//            }
+//        }
+//    }
+//    cout << result0 << endl;
+//    return 0;
+//}
+
+
+
+
+
+////71.孤岛总面积
+//int result = 0;
+//int cnt = 1;
+//bool flag = true;
+//vector<vector<int>> dir = { {1,0},{-1,0},{0,1},{0,-1} };
+//void dfs(vector<vector<int>>& grid, vector<vector<bool>>& visited, int x, int y, int n,int m)
+//{
+//    for (int k = 0; k < 4; k++)
+//    {
+//        int nextx = x + dir[k][0];
+//        int nexty = y + dir[k][1];
+//        if (nextx < 0 || nextx >= n || nexty < 0 || nexty >= m)
+//        {
+//            flag = false;
+//            continue;
+//        }
+//        if (grid[nextx][nexty] == 1 && visited[nextx][nexty] == false)
+//        {
+//            cnt++;
+//            visited[nextx][nexty] = true;
+//            dfs(grid, visited, nextx, nexty, n, m);
+//        }
+//    }
+//}
+//int main()
+//{
+//    int n = 4;
+//    int m = 5;
+//    vector<vector<bool>> visited(n, vector<bool>(m, false));
+//    vector<vector<int>> grid = { {1,1,0,0,0},{1,1,0,0,0},{0,0,1,0,0},{0,0,0,1,1} };
+//    for (int i = 0; i < n; i++)
+//    {
+//        for (int j = 0; j < m; j++)
+//        {
+//            if (visited[i][j] == false && grid[i][j] == 1)
+//            {
+//                visited[i][j] = true;
+//                dfs(grid, visited, i, j, n, m);
+//                if (flag == true)
+//                {
+//                    result += cnt;
+//                }
+//                cnt = 1;
+//                flag = true;
+//            }
+//        }
+//    }
+//    cout << result << endl;
+//    return 0;
+//}
+
+
+
+
+
+//72.沉没孤岛
+//#include<iostream>
+//#include<vector>
+//bool flag = true;
+//bool flag1 = false;
+//bool dfs(vector<vector<int>>& grid, vector<vector<bool>>& visited, int i, int j, int n, int m)
+//{
+//    if (i < 0 || i >= n || j < 0 || j >= m)
+//    {
+//        flag = false;
+//        return false;
+//    }
+//    if (grid[i][j] == 0)
+//    {
+//        return flag;
+//    }
+//    else
+//    {
+//        if (grid[i][j] == 1 && visited[i][j] == false)
+//        {
+//            visited[i][j] = true;
+//            dfs(grid, visited, i + 1, j, n, m);
+//            dfs(grid, visited, i - 1, j, n, m);
+//            dfs(grid, visited, i, j - 1, n, m);
+//            dfs(grid, visited, i, j + 1, n, m);
+//        }
+//    }
+//    return flag;
+//}
+//int main()
+//{
+//    int n = 10;
+//    int m = 10;
+//    vector<vector<int>> grid = { 
+//        {0,1,1,0,0,0,1,0,0,0},
+//        {0,1,0,0,0,0,1,1,1,0},
+//        {1,1,0,1,0,1,1,0,0,0},
+//        {0,0,0,1,1,1,1,0,1,0},
+//        {1,0,1,1,0,1,0,0,1,1},
+//        {1,0,1,0,0,1,1,1,0,1},
+//        {1,0,0,1,0,0,0,1,0,1},
+//        {1,1,0,1,1,1,0,1,1,0},
+//        {1,1,0,1,1,1,0,0,1,1},
+//        {0,0,0,0,0,1,0,1,1,0 }
+//    };
+//    vector<vector<bool>> visited(n, vector<bool>(m, false));
+//    for (int i = 0; i < n; i++)
+//    {
+//        for (int j = 0; j < m; j++)
+//        {
+//            flag = true;
+//            if (grid[i][j] == 1 && visited[i][j] == false)
+//            {
+//                flag1 = dfs(grid, visited, i, j, n, m);
+//            }
+//            if (flag1 == true)
+//            {
+//                grid[i][j] = 0;
+//            }
+//        }
+//    }
+//    for (int i = 0; i < n; i++)
+//    {
+//        for (int j = 0; j < m - 1; j++)
+//        {
+//            cout << grid[i][j] << " ";
+//        }
+//        cout << grid[i][m-1];
+//        cout << endl;
+//    }
+//}
+
+
+
+
+
+////73.高山流水
+//vector<vector<int>> dir = { {1,0},{-1,0},{0,1},{0,-1} };
+//void dfs(vector<vector<int>>& grid, vector<vector<bool>>& judge, int i, int j, int n, int m)
+//{
+//    judge[i][j] = true;
+//    for (int k = 0; k < 4; k++)
+//    {
+//        int nextx = i + dir[k][0];
+//        int nexty = i + dir[k][1];
+//        if (nextx < 0 || nextx >= n || nexty < 0 || nexty >= m)
+//        {
+//            continue;
+//        }
+//        if (grid[i][j] <= grid[nextx][nexty] && judge[nextx][nexty] == false)
+//        {
+//            dfs(grid, judge, nextx, nexty, n, m);
+//        }
+//    }
+//}
+//int main()
+//{
+//    int n = 5;
+//    int m = 5;
+//    vector<vector<bool>>first(n, vector<bool>(m, false));
+//    vector<vector<bool>>second(n, vector<bool>(m, false));
+//    vector<vector<int>> result;
+//    vector<vector<int>> grid = { {1,3,1,2,4},{1,2,1,3,2},{2,4,7,2,1},{4,5,6,1,1},{1,4,1,2,1} };
+//    for (int i = 0; i < n; i++)
+//    {
+//        dfs(grid, first, i, 0, n, m);
+//        dfs(grid, second, i, m - 1, n, m);
+//    }
+//    for (int j = 0; j < m; j++)
+//    {
+//        dfs(grid, first, 0, j, n, m);
+//        dfs(grid, second, n - 1, j, n, m);
+//    }
+//    for (int i = 0; i < n; i++)
+//    {
+//        for (int j = 0; j < m; j++)
+//        {
+//            if (first[i][j] == true && second[i][j] == true)
+//            {
+//                result.push_back({ i,j });
+//            }
+//        }
+//    }
+//    for (int i = 0; i < result.size(); i++)
+//    {
+//        cout << result[i][0] << " " << result[i][1] << endl;
+//    }
+//    return 0;
+//}
+
+
+
+
+
+//74.建造最大人工岛
+//int area = 1;
+//vector<vector<int>> dir = { {1,0},{-1,0},{0,1},{0,-1} };
+//void dfs(vector<vector<int>>& grid, vector<vector<bool>>& visited, int i, int j, int n, int m)
+//{
+//    visited[i][j] = true;
+//    for (int k = 0; k < 4; k++)
+//    {
+//        int nextx = i + dir[k][0];
+//        int nexty = j + dir[k][1];
+//        if (nextx < 0 || nextx >= n || nexty < 0 || nexty >= m)
+//        {
+//            continue;
+//        }
+//        if (visited[nextx][nexty] == false && grid[nextx][nexty] == 1)
+//        {
+//            area++;
+//            dfs(grid, visited, nextx, nexty, n, m);
+//        }
+//    }
+//}
+//int main()
+//{
+//    int n = 2;
+//    int m = 2;
+//    int flag = true;
+//    int maxval = 0;
+//    vector<vector<bool>>visited(n, vector<bool>(m, false));
+//    vector<int> areas;
+//    vector<vector<int>> grid = { {1,1},{0,-1} };
+//    for (int i = 0; i < n; i++)
+//    {
+//        for (int j = 0; j < m; j++)
+//        {
+//            if (grid[i][j] == 1 && visited[i][j] == false)
+//            {
+//                area = 1;
+//                dfs(grid, visited, i, j, n, m);
+//                if (i >= 2 && grid[i - 2][j] == 1)
+//                {
+//                    maxval = max(maxval, areas.back() + area + 1);
+//                }
+//                if (j >= 2 && grid[i][j - 2] == 1)
+//                {
+//                    maxval = max(maxval, areas.back() + area + 1);
+//                }
+//                if (i >= 1 && j >= 1 && grid[i - 1][j - 1] == 1)
+//                {
+//                    maxval = max(maxval, areas.back() + area + 1);
+//                }
+//                areas.push_back(area);
+//            }
+//            if (grid[i][j] == 0)
+//            {
+//                flag = false;
+//            }
+//        }
+//    }
+//    if (areas.size() == 1 && flag == false)
+//    {
+//        cout << areas[0] + 1;
+//    }
+//    else if (areas.size() == 1 && flag == true)
+//    {
+//        cout << areas[0];
+//    }
+//    else
+//    {
+//        cout << maxval;
+//    }
+//    return 0;
+//}
+
+
+
+
+
+//vector<vector<int>> dir = { {1,0},{-1,0},{0,1},{0,-1} };
+//int mcount = 1;
+//int mark = 2;
+//void dfs(vector<vector<int>>& grid, vector<vector<bool>>& visited, int i, int j, int n, int m)
+//{
+//    visited[i][j] = true;
+//    for (int k = 0; k < 4; k++)
+//    {
+//        int nextx = i + dir[k][0];
+//        int nexty = j + dir[k][1];
+//        if (nextx < 0 || nextx >= n || nexty < 0 || nexty >= m)
+//        {
+//            continue;
+//        }
+//        if (visited[nextx][nexty] == false && grid[nextx][nexty] == 1)
+//        {
+//            grid[nextx][nexty] = mark;
+//            mcount++;
+//            dfs(grid, visited, nextx, nexty, n, m);
+//        }
+//    }
+//}
+//int main()
+//{
+//    int n = 4;
+//    int m = 5;
+//    int result = 0;
+//    unordered_map<int, int> map;
+//    vector<vector<int>> grid = { {1,1,0,0,0},{1,1,0,0,0},{0,0,1,0,0},{0,0,0,1,1} };
+//    vector<vector<bool>>visited(n, vector<bool>(m, false));
+//    for (int i = 0; i < n; i++)
+//    {
+//        for (int j = 0; j < m; j++)
+//        {
+//            if (grid[i][j] == 1 && visited[i][j] == false)
+//            {
+//                grid[i][j] = mark;
+//                dfs(grid, visited, i, j, n, m);
+//                map[mark] = mcount;
+//                mcount = 1;
+//                mark++;
+//            }
+//        }
+//    }
+//    for (int i = 0; i < n; i++)
+//    {
+//        for (int j = 0; j < m; j++)
+//        {
+//            int scount = 1;
+//            if (grid[i][j] == 0)
+//            {
+//                unordered_set<int> visitedset;
+//                for (int k = 0; k < 4; k++)
+//                {
+//                    int nearx = i + dir[k][0];
+//                    int neary = j + dir[k][1];
+//                    if (nearx < 0 || nearx >= n || neary < 0 || neary >= m)
+//                    {
+//                        continue;
+//                    }
+//                    if (visitedset.count(grid[nearx][neary]))
+//                    {
+//                        continue;
+//                    }
+//                    if (grid[nearx][neary] >= 2)
+//                    {
+//                        scount += map[grid[nearx][neary]];
+//                        visitedset.insert(grid[nearx][neary]);
+//                    }
+//                }
+//            }
+//            result = max(result, scount);
+//        }
+//    }
+//    cout << result;
+//    return 0;
+//}
+
+
+
+
+
+
+//75.岛屿周长
+int scount = 0;
+vector<vector<int>> dir = { {1,0},{-1,0},{0,1},{0,-1} };
+void dfs(vector<vector<int>>& grid, vector<vector<bool>>& visited, int x, int y, int n, int m)
+{
+    visited[x][y] = true;
+    for (int k = 0; k < 4; k++)
+    {
+        int nextx = x + dir[k][0];
+        int nexty = y + dir[k][1];
+        if (nextx < 0 || nextx >= n || nexty < 0 || nexty >= m)
         {
-            nums.push_back(n % 10);
-            n /= 10;
+            scount++;
+            continue;
         }
-        reverse(nums.begin(), nums.end());
-        for (int i = 0; i < nums.size() - 1; i++)
+        if (grid[nextx][nexty] == 0)
         {
-            if (nums[i] > nums[i + 1])
-            {
-                if (i == 0)
-                {
-                    nums[i]--;
-                    fill(nums.begin() + i + 1, nums.end(), 9);
-                }
-                else
-                {
-                    int j = 0;
-                    for (j = i; j > 0; j--)
-                    {
-                        if (nums[j] - 1 >= nums[j - 1])
-                        {
-                            nums[j]--;
-                            fill(nums.begin() + j + 1, nums.end(), 9);
-                            break;
-                        }
-                    }
-                    if (j == 0)
-                    {
-                        nums[0]--;
-                        fill(nums.begin() + j + 1, nums.end(), 9);
-                    }
-                }
-            }
+            scount++;
+            continue;
         }
-        reverse(nums.begin(), nums.end());
-        int num = 0;
-        int k1 = 1;
-        for (int i = 0; i < nums.size(); i++)
+        if (grid[nextx][nexty] == 1 && visited[nextx][nexty] == false)
         {
-            num += nums[i] * k1;
-            k1 *= 10;
+            dfs(grid, visited, nextx, nexty, n, m);
         }
-        return num;
     }
-};
+}
 int main()
 {
-    Solution s;
-    s.monotoneIncreasingDigits(1000000000);
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int>>grid(n, vector<int>(m, 0));
+    vector<vector<bool>>visited(n, vector<bool>(m, false));
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            cin >> grid[i][j];
+        }
+    }
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            if (grid[i][j] == 1 && visited[i][j] == false)
+            {
+                dfs(grid, visited, i, j, n, m);
+            }
+        }
+    }
+    cout << scount;
     return 0;
 }
